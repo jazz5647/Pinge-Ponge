@@ -7,7 +7,12 @@ from time import time as timer
 
 rel_time_end = 0
 
+speed_x = 3
+speed_y = 3
+
 init()
+
+myfont = font.SysFont('Arial', 30)
 
 class GameSprite(sprite.Sprite):
     def __init__(self, x, y, speed, imag, height, width, dv2, dv3):
@@ -38,11 +43,7 @@ class Player(GameSprite):
             if keypressed[K_s] and self.rect.y <= 400:
                 self.rect.y += self.speed
 
-class Cyborg(GameSprite):
-    def update(self):
-        self.rect.x += self.dv2
-        self.rect.y += self.dv3
-            
+
 w = 700
 h = 500
 cellsize = 24
@@ -68,7 +69,7 @@ fashik = []
 player = Player(10, 350,speed, "pingepoonge.png", 20, 100, 2, 0)
 player2 = Player(670, 350,speed, "pingepoonge.png", 20, 100, 1, 0)
 
-cyborg = Cyborg(300, 200,speed, "piingeponge.png", 50, 50, -3, -3)
+cyborg = GameSprite(300, 200,speed, "piingeponge.png", 50, 50, -3, -3)
 #bullet = Bullet(player.rect.x+20, player.rect.y+20,speed, "shlupka.jpg", 25, 25)
 
 '''for i in range(ch-1):
@@ -89,6 +90,7 @@ ch = 6'''
 display.set_caption("hl2")
 
 game = True
+finish = False
 if game == True:
     while game:
         background.fill((0,255,255))
@@ -111,17 +113,42 @@ if game == True:
                 if e.key == K_ESCAPE:
                     game = False
         
+        if finish != True:
+            cyborg.rect.x += speed_x
+            cyborg.rect.y += speed_y
+            if sprite.collide_rect(cyborg, player):
+                speed_x = speed_x * -1
+
+            if sprite.collide_rect(cyborg, player2):
+                speed_x = speed_x * -1
+
+            if cyborg.rect.y <= 0:
+                speed_y = speed_y * -1
+
+            if cyborg.rect.y >= 450:
+                speed_y = speed_y * -1
+
+            if cyborg.rect.x <= 10:
+                finish = True
+                text = myfont.render("Player 1 lose!", True, (255,0,0))
+                win.blit(text,((w-text.get_width())//2,(h-text.get_height())//2))
+                display.update()
+                time.delay(3000)
+                game = False
+
+            if cyborg.rect.x >= 690:
+                finish = True
+                text = myfont.render("Player 2 lose!", True, (255,0,0))
+                win.blit(text,((w-text.get_width())//2,(h-text.get_height())//2))
+                display.update()
+                time.delay(3000)
+                game = False
+
+
         display.update()
         win.blit(background, (0, 0))
         clock.tick(FPS)
 
-        if sprite.collide_rect(cyborg, player):
-            cyborg.dv2 * 3
-            print("a")
-            
-
-        if sprite.collide_rect(cyborg, player2):
-            cyborg.dv2 * 3
-            print("b")
+        
             
 #quit()
