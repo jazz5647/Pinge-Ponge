@@ -6,10 +6,6 @@
 | file              | description      |
 |-------------------|------------------|
 | piinge-ponge.png  | ball image       |
-|-------------------|------------------|
 | pinge-poonge.png  | player image     |
-|-------------------|------------------|
 | piinge-poonge.png | background image |
-|-------------------|------------------|
 | ping-pong.py      | game file        |
-|-------------------|------------------|
